@@ -1,0 +1,17 @@
+{
+  "name": "Gmail receipt classifier",
+  "version": "0.1",
+  "description": "Sends email raw content for processing together with a receipt / non receipt label",
+  "content_scripts": [
+    {
+      "matches": ["https://mail.google.com/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    "jquery-1.10.2.min.js",
+    "gmail.js",
+    "main.js"
+  ],
+  "manifest_version": 2
+}
