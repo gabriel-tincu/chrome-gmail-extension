@@ -39,7 +39,16 @@ var post_with_retries = function(url, data, retries){
   if(retries==0){
     alert("Giving up on email with id "+data["email_id"]+" after exhausting "+retries_count+" retries");
   } else {
-    $.post(url, data).fail(function(){ post_with_retries(url, data, retries-1); });
+    params = {
+      url: url,
+      data: JSON.stringify(data),
+      contentType: "text/plain",
+      type: "POST",
+      dataType: "json",
+      success: function(){ console.log("successfully sent "+data["email_id"]); },
+      error: function(){ post_with_retries(url, data, retries-1); }
+    };
+    $.ajax(params);   
   }
 }
 
