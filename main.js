@@ -1,5 +1,6 @@
 var gmail;
 var retries_count = 3;
+var post_url = "https://email-classification-backend.shoeboxed.com/email"
 
 function refresh(f) {
   if( (/in/.test(document.readyState)) || (typeof Gmail === undefined) ) {
@@ -12,7 +13,7 @@ function refresh(f) {
 var get_email_data = function() {
   // this function should be called only after checking that we're inside an actual email
   var gmail = new Gmail();
-    if(gmail.check.is_inside_email()){
+  if(gmail.check.is_inside_email()){
     var response = {};
     response["mail_body"] = gmail.get.email_source();;
     response["mail_address"] = gmail.get.user_email();
@@ -23,11 +24,10 @@ var get_email_data = function() {
   }
 }
 
-var post_email = function(is_receipt) {
+var post_email = function(is_receipt, url) {
   var r = get_email_data();
   if(r != null && r != "null"){
     r['is_receipt'] = is_receipt;
-    var url = "https://localhost:9999/foo"
     post_with_retries(url, r, retries_count);
   } else {
     alert("Not inside an email !")
@@ -44,11 +44,11 @@ var post_with_retries = function(url, data, retries){
 }
 
 var post_receipt = function() {
-  return post_email(true);
+  return post_email(true, post_url);
 }
 
 var post_non_receipt = function() {
-  return post_email(false);
+  return post_email(false, post_url);
 }
 
 var main = function(){
